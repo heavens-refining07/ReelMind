@@ -6,10 +6,7 @@
 <title>ReelMind — Find Your Next Film</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --red:#e63946; --amber:#f4a261; --dark:#0a0a0f;
-    --card:#13131e; --border:#1e1e2e; --text:#f0eff4; --muted:#6b6b80; --green:#52b788;
-  }
+  :root{--red:#e63946;--amber:#f4a261;--dark:#0a0a0f;--card:#13131e;--border:#1e1e2e;--text:#f0eff4;--muted:#6b6b80;--green:#52b788;}
   *{margin:0;padding:0;box-sizing:border-box;}
   body{background:var(--dark);color:var(--text);font-family:'Outfit',sans-serif;min-height:100vh;}
   body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 20% 0%,rgba(230,57,70,0.07) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 100%,rgba(244,162,97,0.05) 0%,transparent 60%);pointer-events:none;z-index:0;}
@@ -28,28 +25,14 @@
   .hero-title span{background:linear-gradient(135deg,var(--red),var(--amber));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
   .hero-sub{font-size:1rem;color:var(--muted);max-width:480px;margin:0 auto 36px;line-height:1.6;}
 
-  .search-outer{position:relative;max-width:620px;margin:0 auto;}
-  .search-wrap{display:flex;gap:10px;}
+  .search-wrap{display:flex;gap:10px;max-width:620px;margin:0 auto;}
   .search-input{flex:1;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 20px;font-family:'Outfit',sans-serif;font-size:0.95rem;color:var(--text);outline:none;transition:border-color 0.2s,box-shadow 0.2s;}
   .search-input:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(230,57,70,0.1);}
   .search-input::placeholder{color:#3a3a50;}
   .search-btn{background:linear-gradient(135deg,var(--red),#c1121f);color:#fff;border:none;border-radius:12px;padding:16px 28px;font-family:'Outfit',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;transition:opacity 0.2s;white-space:nowrap;}
   .search-btn:hover{opacity:0.88;}
 
-  /* dropdown results */
-  .drop{position:absolute;top:calc(100% + 6px);left:0;right:0;background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:none;z-index:200;box-shadow:0 20px 60px rgba(0,0,0,0.7);}
-  .drop.show{display:block;}
-  .drop-item{display:flex;align-items:center;gap:14px;padding:12px 16px;cursor:pointer;border-bottom:1px solid var(--border);transition:background 0.15s;}
-  .drop-item:last-child{border-bottom:none;}
-  .drop-item:hover{background:rgba(230,57,70,0.08);}
-  .drop-poster{width:36px;height:54px;border-radius:5px;object-fit:cover;background:#1a1a2e;flex-shrink:0;}
-  .drop-poster-ph{width:36px;height:54px;border-radius:5px;background:#1a1a2e;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
-  .drop-info .drop-title{font-size:0.9rem;font-weight:500;margin-bottom:2px;}
-  .drop-info .drop-year{font-size:0.75rem;color:var(--muted);}
-  .drop-rating{margin-left:auto;font-size:0.75rem;color:var(--amber);}
-  .drop-searching{padding:16px;text-align:center;color:var(--muted);font-size:0.85rem;}
-
-  .quick-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px;}
+  .quick-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px;max-width:620px;margin-left:auto;margin-right:auto;}
   .pill{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:100px;padding:5px 14px;font-size:0.76rem;cursor:pointer;transition:all 0.2s;font-family:'Outfit',sans-serif;}
   .pill:hover{border-color:var(--amber);color:var(--amber);background:rgba(244,162,97,0.05);}
 
@@ -57,9 +40,20 @@
   .loader.show{display:block;}
   .spinner{width:40px;height:40px;border:2px solid var(--border);border-top-color:var(--red);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 14px;}
   @keyframes spin{to{transform:rotate(360deg);}}
-
   .error-msg{display:none;text-align:center;padding:24px;color:var(--red);font-size:0.9rem;position:relative;z-index:1;}
   .error-msg.show{display:block;}
+
+  /* search results dropdown */
+  .search-results-box{max-width:620px;margin:12px auto 0;background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:none;}
+  .search-results-box.show{display:block;}
+  .search-result-item{display:flex;align-items:center;gap:14px;padding:12px 16px;cursor:pointer;border-bottom:1px solid var(--border);transition:background 0.15s;}
+  .search-result-item:last-child{border-bottom:none;}
+  .search-result-item:hover{background:rgba(230,57,70,0.08);}
+  .sri-poster{width:40px;height:60px;border-radius:6px;object-fit:cover;background:#1a1a2e;flex-shrink:0;}
+  .sri-poster-ph{width:40px;height:60px;border-radius:6px;background:#1a1a2e;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+  .sri-title{font-size:0.9rem;font-weight:500;}
+  .sri-year{font-size:0.75rem;color:var(--muted);}
+  .sri-rating{margin-left:auto;font-size:0.75rem;color:var(--amber);white-space:nowrap;}
 
   #results{position:relative;z-index:1;}
   .empty-state{text-align:center;padding:60px 20px;}
@@ -86,7 +80,7 @@
   .stat{flex:1;text-align:center;padding:0 20px;border-right:1px solid var(--border);}
   .stat:last-child{border-right:none;}
   .stat-val{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:1px;display:block;}
-  .stat-val.red{color:var(--red);} .stat-val.amber{color:var(--amber);} .stat-val.green{color:var(--green);}
+  .stat-val.red{color:var(--red);}.stat-val.amber{color:var(--amber);}.stat-val.green{color:var(--green);}
   .stat-key{font-size:0.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
 
   .rec-section{max-width:960px;margin:32px auto 80px;padding:0 24px;animation:fadeUp 0.5s 0.2s ease both;}
@@ -94,24 +88,21 @@
   .sec-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:2px;}
   .sec-line{flex:1;height:1px;background:var(--border);}
   .sec-count{font-size:0.72rem;color:var(--muted);background:var(--card);border:1px solid var(--border);border-radius:100px;padding:3px 12px;}
-
   .rec-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;}
   .rec-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:border-color 0.2s,transform 0.2s,box-shadow 0.2s;animation:fadeUp 0.4s ease both;}
   .rec-card:hover{border-color:rgba(230,57,70,0.4);transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,0.5);}
   .card-poster{width:100%;aspect-ratio:2/3;object-fit:cover;display:block;background:#1a1a2e;}
   .card-poster-ph{width:100%;aspect-ratio:2/3;background:linear-gradient(135deg,#1a1a2e,#0d0d1a);display:flex;align-items:center;justify-content:center;font-size:3rem;color:#2a2a40;}
   .card-body{padding:14px 16px;}
-  .card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;}
-  .card-title{font-family:'Bebas Neue',sans-serif;font-size:1.05rem;letter-spacing:1px;line-height:1.2;flex:1;}
+  .card-title{font-family:'Bebas Neue',sans-serif;font-size:1.05rem;letter-spacing:1px;line-height:1.2;margin-bottom:6px;}
+  .card-overview{font-size:0.78rem;color:#4a5568;line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
   .card-foot{display:flex;justify-content:space-between;padding-top:10px;border-top:1px solid var(--border);margin-top:8px;}
   .card-year{font-size:0.72rem;color:var(--muted);}
   .card-rating{font-size:0.72rem;color:var(--amber);}
-  .card-overview{font-size:0.78rem;color:#4a5568;line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
 
   footer{text-align:center;padding:28px;border-top:1px solid var(--border);font-size:0.75rem;color:#3a3a50;position:relative;z-index:1;}
   footer strong{color:var(--amber);}
-
-  @media(max-width:600px){nav{padding:0 16px;}.selected-inner{flex-direction:column;}.report-inner{flex-wrap:wrap;}.stat{min-width:50%;margin-bottom:10px;}.search-wrap{flex-direction:column;}.search-btn{width:100%;}}
+  @media(max-width:600px){nav{padding:0 16px;}.selected-inner{flex-direction:column;}.report-inner{flex-wrap:wrap;}.stat{min-width:50%;}.search-wrap{flex-direction:column;}.search-btn{width:100%;}}
 </style>
 </head>
 <body>
@@ -132,21 +123,17 @@
   <h1 class="hero-title">Find Your <span>Next Film</span></h1>
   <p class="hero-sub">Search any movie in the world and get instant recommendations — Bollywood, Hollywood, anything!</p>
 
-  <div class="search-outer" id="searchOuter">
-    <div class="search-wrap">
-      <input type="text" class="search-input" id="searchInput" placeholder="Type any movie name… e.g. Pushpa, Inception, RRR" autocomplete="off" />
-      <button class="search-btn" onclick="triggerSearch()">Search →</button>
-    </div>
-    <div class="drop" id="dropList"></div>
+  <div class="search-wrap">
+    <input type="text" class="search-input" id="searchInput" placeholder="Type any movie… e.g. Pushpa, RRR, Inception" autocomplete="off" onkeydown="if(event.key==='Enter') doSearch()" />
+    <button class="search-btn" onclick="doSearch()">Search →</button>
   </div>
+
+  <div class="search-results-box" id="searchResultsBox"></div>
 
   <div class="quick-row" id="quickRow"></div>
 </div>
 
-<div class="loader" id="loader">
-  <div class="spinner"></div>
-  <p style="color:var(--muted);font-size:0.85rem;">Finding recommendations…</p>
-</div>
+<div class="loader" id="loader"><div class="spinner"></div><p style="color:var(--muted);font-size:0.85rem;">Finding recommendations…</p></div>
 <div class="error-msg" id="errorMsg"></div>
 
 <div id="results">
@@ -158,8 +145,7 @@
 </div>
 
 <footer>
-  <strong>ReelMind</strong> &nbsp;·&nbsp; S.Y.B.Sc. CS Mini Project &nbsp;·&nbsp; CS-281-FP &nbsp;·&nbsp;
-  Savitribai Phule Pune University &nbsp;·&nbsp; Powered by TMDB API
+  <strong>ReelMind</strong> &nbsp;·&nbsp; S.Y.B.Sc. CS Mini Project &nbsp;·&nbsp; CS-281-FP &nbsp;·&nbsp; Savitribai Phule Pune University &nbsp;·&nbsp; Powered by TMDB API
 </footer>
 
 <script>
@@ -169,79 +155,65 @@
   document.getElementById('navUser').textContent = username;
   document.getElementById('avatarEl').textContent = username.charAt(0).toUpperCase();
 
-  // Quick picks from TMDB popular
+  // Quick picks
   const qr = document.getElementById('quickRow');
   popular.slice(0,8).forEach(t => {
     const b = document.createElement('button');
     b.className = 'pill'; b.textContent = t;
-    b.onclick = () => { document.getElementById('searchInput').value = t; doLiveSearch(t); };
+    b.onclick = () => { document.getElementById('searchInput').value = t; doSearch(); };
     qr.appendChild(b);
   });
 
-  // Live search with debounce
-  const input    = document.getElementById('searchInput');
-  const dropList = document.getElementById('dropList');
-  let searchTimer = null;
+  function doSearch() {
+    const query = document.getElementById('searchInput').value.trim();
+    if (!query) return;
 
-  input.addEventListener('input', () => {
-    clearTimeout(searchTimer);
-    const val = input.value.trim();
-    if (!val) { dropList.classList.remove('show'); return; }
-    dropList.innerHTML = '<div class="drop-searching">🔍 Searching...</div>';
-    dropList.classList.add('show');
-    searchTimer = setTimeout(() => doLiveSearch(val), 400);
-  });
+    const box = document.getElementById('searchResultsBox');
+    box.innerHTML = '<div style="padding:16px;text-align:center;color:var(--muted);font-size:0.85rem;">🔍 Searching...</div>';
+    box.classList.add('show');
+    document.getElementById('results').innerHTML = '';
+    document.getElementById('errorMsg').classList.remove('show');
 
-  input.addEventListener('keydown', e => { if(e.key === 'Enter') triggerSearch(); });
-  document.addEventListener('click', e => { if(!e.target.closest('#searchOuter')) dropList.classList.remove('show'); });
-
-  function triggerSearch() {
-    const val = input.value.trim();
-    if (val) doLiveSearch(val);
-  }
-
-  function doLiveSearch(query) {
-    fetch(`/search-suggestions?q=${encodeURIComponent(query)}`)
+    fetch('/search?q=' + encodeURIComponent(query))
     .then(r => r.json())
     .then(results => {
-      dropList.innerHTML = '';
-      if (!results || !results.length) {
-        dropList.innerHTML = '<div class="drop-searching">No movies found</div>';
-        dropList.classList.add('show'); return;
+      box.innerHTML = '';
+      if (!results || results.length === 0) {
+        box.innerHTML = '<div style="padding:16px;text-align:center;color:var(--muted);">No movies found. Try a different name.</div>';
+        return;
       }
       results.forEach(m => {
-        const d = document.createElement('div');
-        d.className = 'drop-item';
-        d.innerHTML = `
-          ${m.poster
-            ? `<img class="drop-poster" src="${m.poster}" alt="${m.title}" onerror="this.style.display='none'">`
-            : `<div class="drop-poster-ph">🎬</div>`}
-          <div class="drop-info">
-            <div class="drop-title">${m.title}</div>
-            <div class="drop-year">${m.year}</div>
+        const item = document.createElement('div');
+        item.className = 'search-result-item';
+        item.innerHTML = `
+          ${m.poster ? `<img class="sri-poster" src="${m.poster}" alt="${m.title}" onerror="this.outerHTML='<div class=sri-poster-ph>🎬</div>'">` : '<div class="sri-poster-ph">🎬</div>'}
+          <div>
+            <div class="sri-title">${m.title}</div>
+            <div class="sri-year">${m.year}</div>
           </div>
-          <div class="drop-rating">⭐ ${m.rating}</div>
+          <div class="sri-rating">⭐ ${m.rating}</div>
         `;
-        d.onclick = () => {
-          input.value = m.title;
-          dropList.classList.remove('show');
-          getRecommendations(m.id, m.title);
+        item.onclick = () => {
+          box.classList.remove('show');
+          document.getElementById('searchInput').value = m.title;
+          getRecommendations(m.id);
         };
-        dropList.appendChild(d);
+        box.appendChild(item);
       });
-      dropList.classList.add('show');
+    })
+    .catch(err => {
+      box.innerHTML = '<div style="padding:16px;text-align:center;color:var(--red);">Error fetching results.</div>';
     });
   }
 
-  function getRecommendations(movieId, title) {
+  function getRecommendations(movieId) {
     document.getElementById('loader').classList.add('show');
-    document.getElementById('errorMsg').classList.remove('show');
     document.getElementById('results').innerHTML = '';
-    dropList.classList.remove('show');
+    document.getElementById('searchResultsBox').classList.remove('show');
 
-    fetch(`/recommend/${movieId}`)
-    .then(r => r.json().then(d => ({ ok: r.ok, data: d })))
-    .then(({ ok, data }) => {
+    fetch('/recommend/' + movieId)
+    .then(r => r.json().then(d => ({ok: r.ok, data: d})))
+    .then(({ok, data}) => {
       document.getElementById('loader').classList.remove('show');
       if (!ok) {
         const e = document.getElementById('errorMsg');
@@ -252,17 +224,12 @@
     });
   }
 
-  function renderResults({ movie, recommendations }) {
-    const genreBadges = movie.genres
-      ? movie.genres.split(' ').map(g => `<span class="badge genre">${g}</span>`).join('')
-      : '';
-
+  function renderResults({movie, recommendations}) {
+    const genreBadges = movie.genres ? movie.genres.split(' ').map(g=>`<span class="badge genre">${g}</span>`).join('') : '';
     let html = `
       <div class="selected-movie">
         <div class="selected-inner">
-          ${movie.poster
-            ? `<img class="poster-img" src="${movie.poster}" alt="${movie.title}">`
-            : `<div class="poster-ph">🎬</div>`}
+          ${movie.poster ? `<img class="poster-img" src="${movie.poster}" alt="${movie.title}">` : '<div class="poster-ph">🎬</div>'}
           <div style="flex:1">
             <span class="sel-label">Selected Movie</span>
             <div class="sel-title">${movie.title}</div>
@@ -276,7 +243,6 @@
           </div>
         </div>
       </div>
-
       <div class="report-wrap">
         <div class="report-inner">
           <div class="stat"><span class="stat-val red">${recommendations.length}</span><span class="stat-key">Movies Found</span></div>
@@ -285,7 +251,6 @@
           <div class="stat"><span class="stat-val" style="color:#8888a0;font-size:1.1rem;">TMDB</span><span class="stat-key">Powered By</span></div>
         </div>
       </div>
-
       <div class="rec-section">
         <div class="sec-header">
           <div class="sec-title">Recommended For You</div>
@@ -293,15 +258,11 @@
           <div class="sec-count">${recommendations.length} results</div>
         </div>
         <div class="rec-grid">
-          ${recommendations.map((r, i) => `
-            <div class="rec-card" style="animation-delay:${i*0.07}s" onclick="getRecommendations(${r.id}, '${r.title.replace(/'/g,"\\'")}')">
-              ${r.poster
-                ? `<img class="card-poster" src="${r.poster}" alt="${r.title}">`
-                : `<div class="card-poster-ph">🎬</div>`}
+          ${recommendations.map((r,i) => `
+            <div class="rec-card" style="animation-delay:${i*0.07}s" onclick="getRecommendations(${r.id})">
+              ${r.poster ? `<img class="card-poster" src="${r.poster}" alt="${r.title}">` : '<div class="card-poster-ph">🎬</div>'}
               <div class="card-body">
-                <div class="card-top">
-                  <div class="card-title">${r.title}</div>
-                </div>
+                <div class="card-title">${r.title}</div>
                 <div class="card-overview">${r.overview || ''}</div>
                 <div class="card-foot">
                   <span class="card-year">${r.year}</span>
@@ -313,9 +274,8 @@
         </div>
       </div>
     `;
-
     document.getElementById('results').innerHTML = html;
-    document.getElementById('results').scrollIntoView({ behavior:'smooth', block:'start' });
+    document.getElementById('results').scrollIntoView({behavior:'smooth', block:'start'});
   }
 </script>
 </body>
