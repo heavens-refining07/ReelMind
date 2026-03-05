@@ -1,23 +1,19 @@
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-import os, json, hashlib
+import os, hashlib
 
 app = Flask(__name__)
 app.secret_key = 'cinematch_secret_2024'
 
-USERS_FILE = 'users.json'
+# ─── USER STORAGE (in-memory) ─────────────────────────────────────────────────
+USERS = {}
 
-# ─── USER STORAGE (file-based, no DB needed) ──────────────────────────────────
 def load_users():
-    if os.path.exists(USERS_FILE):
-        with open(USERS_FILE, 'r') as f:
-            return json.load(f)
-    return {}
+    return USERS
 
 def save_users(users):
-    with open(USERS_FILE, 'w') as f:
-        json.dump(users, f)
+    USERS.update(users)
 
 def hash_password(pw):
     return hashlib.sha256(pw.encode()).hexdigest()
