@@ -184,7 +184,7 @@
     .then(({ ok, data }) => {
       if (ok) {
         successBox.classList.add('show');
-        setTimeout(() => window.location = '/', 1200);
+        setTimeout(() => window.location = data.redirect || '/onboarding', 1200);
       } else {
         errorBox.textContent = data.error || 'Registration failed.';
         errorBox.classList.add('show');
