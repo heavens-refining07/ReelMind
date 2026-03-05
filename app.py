@@ -6,7 +6,7 @@ import os, hashlib, requests
 app = Flask(__name__)
 app.secret_key = 'reelmind_secret_2024'
 
-TMDB_KEY = '845bec6c276b668f4048ae57ddb1e541'
+TMDB_KEY = os.environ.get('TMDB_API_KEY', 'YOUR_TMDB_API_KEY')
 TMDB_BASE = 'https://api.themoviedb.org/3'
 
 # USER STORAGE (in-memory)
