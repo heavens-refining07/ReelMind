@@ -19,11 +19,11 @@
   .btn-logout{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:6px 14px;font-family:'Outfit',sans-serif;font-size:0.8rem;cursor:pointer;transition:all 0.2s;}
   .btn-logout:hover{border-color:var(--red);color:var(--red);}
 
-  .hero{position:relative;z-index:1;text-align:center;padding:64px 20px 40px;}
-  .hero-eyebrow{display:inline-block;font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--amber);background:rgba(244,162,97,0.08);border:1px solid rgba(244,162,97,0.2);border-radius:100px;padding:5px 16px;margin-bottom:22px;}
-  .hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,7vw,6rem);letter-spacing:2px;line-height:1;margin-bottom:14px;}
+  .hero{position:relative;z-index:1;text-align:center;padding:50px 20px 30px;}
+  .hero-eyebrow{display:inline-block;font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--amber);background:rgba(244,162,97,0.08);border:1px solid rgba(244,162,97,0.2);border-radius:100px;padding:5px 16px;margin-bottom:18px;}
+  .hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,6vw,5rem);letter-spacing:2px;line-height:1;margin-bottom:12px;}
   .hero-title span{background:linear-gradient(135deg,var(--red),var(--amber));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-  .hero-sub{font-size:1rem;color:var(--muted);max-width:480px;margin:0 auto 36px;line-height:1.6;}
+  .hero-sub{font-size:0.95rem;color:var(--muted);max-width:480px;margin:0 auto 30px;line-height:1.6;}
 
   .search-wrap{display:flex;gap:10px;max-width:620px;margin:0 auto;}
   .search-input{flex:1;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 20px;font-family:'Outfit',sans-serif;font-size:0.95rem;color:var(--text);outline:none;transition:border-color 0.2s,box-shadow 0.2s;}
@@ -32,19 +32,12 @@
   .search-btn{background:linear-gradient(135deg,var(--red),#c1121f);color:#fff;border:none;border-radius:12px;padding:16px 28px;font-family:'Outfit',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;transition:opacity 0.2s;white-space:nowrap;}
   .search-btn:hover{opacity:0.88;}
 
-  .quick-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px;max-width:620px;margin-left:auto;margin-right:auto;}
+  .quick-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px;max-width:620px;margin-left:auto;margin-right:auto;}
   .pill{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:100px;padding:5px 14px;font-size:0.76rem;cursor:pointer;transition:all 0.2s;font-family:'Outfit',sans-serif;}
   .pill:hover{border-color:var(--amber);color:var(--amber);background:rgba(244,162,97,0.05);}
 
-  .loader{display:none;text-align:center;padding:60px 20px;position:relative;z-index:1;}
-  .loader.show{display:block;}
-  .spinner{width:40px;height:40px;border:2px solid var(--border);border-top-color:var(--red);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 14px;}
-  @keyframes spin{to{transform:rotate(360deg);}}
-  .error-msg{display:none;text-align:center;padding:24px;color:var(--red);font-size:0.9rem;position:relative;z-index:1;}
-  .error-msg.show{display:block;}
-
-  /* search results dropdown */
-  .search-results-box{max-width:620px;margin:12px auto 0;background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:none;}
+  /* search results */
+  .search-results-box{max-width:620px;margin:12px auto 0;background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:none;position:relative;z-index:10;}
   .search-results-box.show{display:block;}
   .search-result-item{display:flex;align-items:center;gap:14px;padding:12px 16px;cursor:pointer;border-bottom:1px solid var(--border);transition:background 0.15s;}
   .search-result-item:last-child{border-bottom:none;}
@@ -55,54 +48,64 @@
   .sri-year{font-size:0.75rem;color:var(--muted);}
   .sri-rating{margin-left:auto;font-size:0.75rem;color:var(--amber);white-space:nowrap;}
 
-  #results{position:relative;z-index:1;}
-  .empty-state{text-align:center;padding:60px 20px;}
-  .empty-icon{font-size:3.5rem;margin-bottom:16px;opacity:0.4;}
-  .empty-title{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--muted);letter-spacing:2px;margin-bottom:8px;}
-  .empty-sub{font-size:0.85rem;color:#3a3a50;}
+  .loader{display:none;text-align:center;padding:60px 20px;position:relative;z-index:1;}
+  .loader.show{display:block;}
+  .spinner{width:40px;height:40px;border:2px solid var(--border);border-top-color:var(--red);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 14px;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .error-msg{display:none;text-align:center;padding:24px;color:var(--red);font-size:0.9rem;position:relative;z-index:1;}
+  .error-msg.show{display:block;}
 
-  @keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
-
-  .selected-movie{max-width:960px;margin:50px auto 0;padding:0 24px;animation:fadeUp 0.5s ease both;}
-  .selected-inner{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;display:flex;gap:28px;align-items:flex-start;border-top:3px solid var(--red);}
-  .poster-img{width:120px;height:180px;border-radius:10px;object-fit:cover;flex-shrink:0;border:1px solid var(--border);}
-  .poster-ph{width:120px;height:180px;border-radius:10px;flex-shrink:0;background:#1a1a2e;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:3rem;}
-  .sel-label{font-size:0.68rem;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin-bottom:8px;display:block;}
-  .sel-title{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:2px;line-height:1.1;margin-bottom:10px;}
-  .meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
-  .badge{font-size:0.72rem;padding:3px 10px;border-radius:6px;background:var(--border);color:var(--muted);}
-  .badge.rating{background:rgba(244,162,97,0.12);color:var(--amber);border:1px solid rgba(244,162,97,0.2);font-weight:600;}
-  .badge.genre{background:rgba(230,57,70,0.08);color:#c06070;border:1px solid rgba(230,57,70,0.15);}
-  .sel-desc{font-size:0.88rem;color:var(--muted);line-height:1.65;}
-
-  .report-wrap{max-width:960px;margin:20px auto 0;padding:0 24px;animation:fadeUp 0.5s 0.1s ease both;}
-  .report-inner{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px 28px;display:flex;}
-  .stat{flex:1;text-align:center;padding:0 20px;border-right:1px solid var(--border);}
-  .stat:last-child{border-right:none;}
-  .stat-val{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:1px;display:block;}
-  .stat-val.red{color:var(--red);}.stat-val.amber{color:var(--amber);}.stat-val.green{color:var(--green);}
-  .stat-key{font-size:0.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
-
-  .rec-section{max-width:960px;margin:32px auto 80px;padding:0 24px;animation:fadeUp 0.5s 0.2s ease both;}
-  .sec-header{display:flex;align-items:center;gap:14px;margin-bottom:24px;}
+  /* personalized section */
+  .section{max-width:1100px;margin:40px auto 0;padding:0 24px;position:relative;z-index:1;}
+  .sec-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
   .sec-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:2px;}
   .sec-line{flex:1;height:1px;background:var(--border);}
-  .sec-count{font-size:0.72rem;color:var(--muted);background:var(--card);border:1px solid var(--border);border-radius:100px;padding:3px 12px;}
-  .rec-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;}
-  .rec-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:border-color 0.2s,transform 0.2s,box-shadow 0.2s;animation:fadeUp 0.4s ease both;}
-  .rec-card:hover{border-color:rgba(230,57,70,0.4);transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,0.5);}
-  .card-poster{width:100%;aspect-ratio:2/3;object-fit:cover;display:block;background:#1a1a2e;}
-  .card-poster-ph{width:100%;aspect-ratio:2/3;background:linear-gradient(135deg,#1a1a2e,#0d0d1a);display:flex;align-items:center;justify-content:center;font-size:3rem;color:#2a2a40;}
-  .card-body{padding:14px 16px;}
-  .card-title{font-family:'Bebas Neue',sans-serif;font-size:1.05rem;letter-spacing:1px;line-height:1.2;margin-bottom:6px;}
-  .card-overview{font-size:0.78rem;color:#4a5568;line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
-  .card-foot{display:flex;justify-content:space-between;padding-top:10px;border-top:1px solid var(--border);margin-top:8px;}
-  .card-year{font-size:0.72rem;color:var(--muted);}
-  .card-rating{font-size:0.72rem;color:var(--amber);}
+  .sec-badge{font-size:0.72rem;color:var(--green);background:rgba(82,183,136,0.1);border:1px solid rgba(82,183,136,0.2);border-radius:100px;padding:3px 12px;}
+  .sec-badge.amber{color:var(--amber);background:rgba(244,162,97,0.1);border-color:rgba(244,162,97,0.2);}
 
-  footer{text-align:center;padding:28px;border-top:1px solid var(--border);font-size:0.75rem;color:#3a3a50;position:relative;z-index:1;}
+  /* liked movies row */
+  .liked-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;}
+  .liked-chip{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:100px;padding:4px 12px 4px 4px;font-size:0.78rem;color:var(--muted);}
+  .liked-chip img{width:24px;height:24px;border-radius:50%;object-fit:cover;}
+  .liked-chip span{color:var(--text);}
+
+  /* movie grids */
+  .movies-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+  .m-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:border-color 0.2s,transform 0.2s,box-shadow 0.2s;animation:fadeUp 0.4s ease both;}
+  .m-card:hover{border-color:rgba(230,57,70,0.4);transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,0.5);}
+  .m-card img{width:100%;aspect-ratio:2/3;object-fit:cover;display:block;background:#1a1a2e;}
+  .m-card-ph{width:100%;aspect-ratio:2/3;background:linear-gradient(135deg,#1a1a2e,#0d0d1a);display:flex;align-items:center;justify-content:center;font-size:2.5rem;color:#2a2a40;}
+  .m-card-body{padding:10px 12px;}
+  .m-card-title{font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:1px;line-height:1.2;margin-bottom:4px;}
+  .m-card-foot{display:flex;justify-content:space-between;}
+  .m-card-year{font-size:0.68rem;color:var(--muted);}
+  .m-card-rating{font-size:0.68rem;color:var(--amber);}
+
+  /* rec results */
+  #results{position:relative;z-index:1;}
+  .selected-movie{max-width:960px;margin:40px auto 0;padding:0 24px;animation:fadeUp 0.5s ease both;}
+  .selected-inner{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px;display:flex;gap:24px;align-items:flex-start;border-top:3px solid var(--red);}
+  .poster-img{width:110px;height:165px;border-radius:10px;object-fit:cover;flex-shrink:0;}
+  .poster-ph{width:110px;height:165px;border-radius:10px;flex-shrink:0;background:#1a1a2e;display:flex;align-items:center;justify-content:center;font-size:2.5rem;}
+  .sel-label{font-size:0.68rem;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin-bottom:6px;display:block;}
+  .sel-title{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:2px;line-height:1.1;margin-bottom:10px;}
+  .meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+  .badge{font-size:0.72rem;padding:3px 10px;border-radius:6px;background:var(--border);color:var(--muted);}
+  .badge.rating{background:rgba(244,162,97,0.12);color:var(--amber);font-weight:600;}
+  .badge.genre{background:rgba(230,57,70,0.08);color:#c06070;}
+  .sel-desc{font-size:0.85rem;color:var(--muted);line-height:1.65;}
+
+  .rec-section{max-width:960px;margin:24px auto 80px;padding:0 24px;animation:fadeUp 0.5s 0.1s ease both;}
+
+  .onboard-cta{max-width:620px;margin:20px auto 0;background:rgba(244,162,97,0.05);border:1px solid rgba(244,162,97,0.2);border-radius:14px;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;position:relative;z-index:1;}
+  .onboard-cta-text{font-size:0.88rem;color:var(--muted);}
+  .onboard-cta-text strong{color:var(--amber);}
+  .btn-onboard{background:linear-gradient(135deg,var(--amber),#e76f51);color:#0a0a0f;border:none;border-radius:8px;padding:9px 18px;font-family:'Outfit',sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer;white-space:nowrap;}
+
+  footer{text-align:center;padding:28px;border-top:1px solid var(--border);font-size:0.75rem;color:#3a3a50;position:relative;z-index:1;margin-top:40px;}
   footer strong{color:var(--amber);}
-  @media(max-width:600px){nav{padding:0 16px;}.selected-inner{flex-direction:column;}.report-inner{flex-wrap:wrap;}.stat{min-width:50%;}.search-wrap{flex-direction:column;}.search-btn{width:100%;}}
+  @media(max-width:600px){nav{padding:0 16px;}.search-wrap{flex-direction:column;}.search-btn{width:100%;}.selected-inner{flex-direction:column;}.movies-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));}}
 </style>
 </head>
 <body>
@@ -127,22 +130,81 @@
     <input type="text" class="search-input" id="searchInput" placeholder="Type any movie… e.g. Pushpa, RRR, Inception" autocomplete="off" onkeydown="if(event.key==='Enter') doSearch()" />
     <button class="search-btn" onclick="doSearch()">Search →</button>
   </div>
-
   <div class="search-results-box" id="searchResultsBox"></div>
-
   <div class="quick-row" id="quickRow"></div>
 </div>
 
-<div class="loader" id="loader"><div class="spinner"></div><p style="color:var(--muted);font-size:0.85rem;">Finding recommendations…</p></div>
-<div class="error-msg" id="errorMsg"></div>
+{% if not has_prefs %}
+<div class="onboard-cta">
+  <div class="onboard-cta-text"><strong>🎯 Personalise your feed!</strong> Tell us what movies you've seen and we'll curate recommendations just for you.</div>
+  <button class="btn-onboard" onclick="window.location='/onboarding'">Pick Movies →</button>
+</div>
+{% endif %}
 
-<div id="results">
-  <div class="empty-state">
-    <div class="empty-icon">🎬</div>
-    <div class="empty-title">Search Any Movie</div>
-    <div class="empty-sub">Type a movie name above — Bollywood, Hollywood, any language!</div>
+{% if has_prefs and personalized %}
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-title">Picked For You</div>
+    <div class="sec-line"></div>
+    <div class="sec-badge">Based on your taste</div>
+  </div>
+  {% if pref_movies %}
+  <div class="liked-row">
+    {% for m in pref_movies[:5] %}
+    <div class="liked-chip">
+      {% if m.poster %}<img src="{{ m.poster }}" alt="{{ m.title }}">{% endif %}
+      <span>{{ m.title }}</span>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  <div class="movies-grid" style="margin-top:16px;">
+    {% for m in personalized %}
+    <div class="m-card" onclick="getRecommendations({{ m.id }})" style="animation-delay:{{ loop.index0 * 0.05 }}s">
+      {% if m.poster %}
+      <img src="{{ m.poster }}" alt="{{ m.title }}" loading="lazy">
+      {% else %}
+      <div class="m-card-ph">🎬</div>
+      {% endif %}
+      <div class="m-card-body">
+        <div class="m-card-title">{{ m.title }}</div>
+        <div class="m-card-foot">
+          <span class="m-card-year">{{ m.year }}</span>
+          <span class="m-card-rating">⭐ {{ m.rating }}</span>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div style="text-align:right;margin-top:12px;">
+    <button onclick="window.location='/onboarding'" style="background:transparent;border:none;color:var(--muted);font-size:0.78rem;cursor:pointer;font-family:'Outfit',sans-serif;">✏️ Update my preferences</button>
   </div>
 </div>
+{% endif %}
+
+{% if not has_prefs %}
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-title">Trending Now</div>
+    <div class="sec-line"></div>
+    <div class="sec-badge amber">Popular on TMDB</div>
+  </div>
+  <div class="movies-grid">
+    {% for title in popular[:8] %}
+    <div class="m-card" onclick="document.getElementById('searchInput').value='{{ title }}';doSearch();" style="animation-delay:{{ loop.index0 * 0.05 }}s">
+      <div class="m-card-ph">🎬</div>
+      <div class="m-card-body">
+        <div class="m-card-title">{{ title }}</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+<div class="loader" id="loader"><div class="spinner"></div><p style="color:var(--muted);font-size:0.85rem;">Finding recommendations…</p></div>
+<div class="error-msg" id="errorMsg"></div>
+<div id="results"></div>
 
 <footer>
   <strong>ReelMind</strong> &nbsp;·&nbsp; S.Y.B.Sc. CS Mini Project &nbsp;·&nbsp; CS-281-FP &nbsp;·&nbsp; Savitribai Phule Pune University &nbsp;·&nbsp; Powered by TMDB API
@@ -157,7 +219,7 @@
 
   // Quick picks
   const qr = document.getElementById('quickRow');
-  popular.slice(0,8).forEach(t => {
+  popular.slice(0,6).forEach(t => {
     const b = document.createElement('button');
     b.className = 'pill'; b.textContent = t;
     b.onclick = () => { document.getElementById('searchInput').value = t; doSearch(); };
@@ -167,7 +229,6 @@
   function doSearch() {
     const query = document.getElementById('searchInput').value.trim();
     if (!query) return;
-
     const box = document.getElementById('searchResultsBox');
     box.innerHTML = '<div style="padding:16px;text-align:center;color:var(--muted);font-size:0.85rem;">🔍 Searching...</div>';
     box.classList.add('show');
@@ -186,11 +247,8 @@
         const item = document.createElement('div');
         item.className = 'search-result-item';
         item.innerHTML = `
-          ${m.poster ? `<img class="sri-poster" src="${m.poster}" alt="${m.title}" onerror="this.outerHTML='<div class=sri-poster-ph>🎬</div>'">` : '<div class="sri-poster-ph">🎬</div>'}
-          <div>
-            <div class="sri-title">${m.title}</div>
-            <div class="sri-year">${m.year}</div>
-          </div>
+          ${m.poster ? `<img class="sri-poster" src="${m.poster}" alt="" onerror="this.outerHTML='<div class=sri-poster-ph>🎬</div>'">` : '<div class="sri-poster-ph">🎬</div>'}
+          <div><div class="sri-title">${m.title}</div><div class="sri-year">${m.year}</div></div>
           <div class="sri-rating">⭐ ${m.rating}</div>
         `;
         item.onclick = () => {
@@ -200,9 +258,6 @@
         };
         box.appendChild(item);
       });
-    })
-    .catch(err => {
-      box.innerHTML = '<div style="padding:16px;text-align:center;color:var(--red);">Error fetching results.</div>';
     });
   }
 
@@ -210,6 +265,7 @@
     document.getElementById('loader').classList.add('show');
     document.getElementById('results').innerHTML = '';
     document.getElementById('searchResultsBox').classList.remove('show');
+    window.scrollTo({top: document.getElementById('loader').offsetTop - 80, behavior:'smooth'});
 
     fetch('/recommend/' + movieId)
     .then(r => r.json().then(d => ({ok: r.ok, data: d})))
@@ -231,7 +287,7 @@
         <div class="selected-inner">
           ${movie.poster ? `<img class="poster-img" src="${movie.poster}" alt="${movie.title}">` : '<div class="poster-ph">🎬</div>'}
           <div style="flex:1">
-            <span class="sel-label">Selected Movie</span>
+            <span class="sel-label">Now Viewing</span>
             <div class="sel-title">${movie.title}</div>
             <div class="meta-row">
               <span class="badge rating">⭐ ${movie.rating}/10</span>
@@ -239,34 +295,26 @@
               ${movie.runtime ? `<span class="badge">${movie.runtime} min</span>` : ''}
               ${genreBadges}
             </div>
-            <div class="sel-desc">${movie.overview || 'No description available.'}</div>
+            <div class="sel-desc">${movie.overview || ''}</div>
           </div>
-        </div>
-      </div>
-      <div class="report-wrap">
-        <div class="report-inner">
-          <div class="stat"><span class="stat-val red">${recommendations.length}</span><span class="stat-key">Movies Found</span></div>
-          <div class="stat"><span class="stat-val amber">${movie.rating}/10</span><span class="stat-key">TMDB Rating</span></div>
-          <div class="stat"><span class="stat-val green">LIVE</span><span class="stat-key">Data Source</span></div>
-          <div class="stat"><span class="stat-val" style="color:#8888a0;font-size:1.1rem;">TMDB</span><span class="stat-key">Powered By</span></div>
         </div>
       </div>
       <div class="rec-section">
         <div class="sec-header">
           <div class="sec-title">Recommended For You</div>
           <div class="sec-line"></div>
-          <div class="sec-count">${recommendations.length} results</div>
+          <div class="sec-badge">${recommendations.length} results</div>
         </div>
-        <div class="rec-grid">
+        <div class="movies-grid">
           ${recommendations.map((r,i) => `
-            <div class="rec-card" style="animation-delay:${i*0.07}s" onclick="getRecommendations(${r.id})">
-              ${r.poster ? `<img class="card-poster" src="${r.poster}" alt="${r.title}">` : '<div class="card-poster-ph">🎬</div>'}
-              <div class="card-body">
-                <div class="card-title">${r.title}</div>
-                <div class="card-overview">${r.overview || ''}</div>
-                <div class="card-foot">
-                  <span class="card-year">${r.year}</span>
-                  <span class="card-rating">⭐ ${r.rating}</span>
+            <div class="m-card" style="animation-delay:${i*0.07}s" onclick="getRecommendations(${r.id})">
+              ${r.poster ? `<img src="${r.poster}" alt="${r.title}" loading="lazy">` : '<div class="m-card-ph">🎬</div>'}
+              <div class="m-card-body">
+                <div class="m-card-title">${r.title}</div>
+                <div style="font-size:0.75rem;color:#4a5568;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${r.overview||''}</div>
+                <div class="m-card-foot">
+                  <span class="m-card-year">${r.year}</span>
+                  <span class="m-card-rating">⭐ ${r.rating}</span>
                 </div>
               </div>
             </div>
