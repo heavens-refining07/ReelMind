@@ -16,27 +16,28 @@ def hash_password(pw):
 def tmdb_get(endpoint, params=''):
     url = f"{TMDB_BASE}{endpoint}?api_key={TMDB_KEY}&{params}"
     try:
-        with urllib.request.urlopen(url, timeout=8) as r:
+        with urllib.request.urlopen(url, timeout=10) as r:
             return jsonlib.loads(r.read().decode())
-    except:
+    except Exception as e:
+        print(f"TMDB error: {e}")
         return None
+
+def format_movie(m):
+    return {
+        'id': m['id'],
+        'title': m.get('title', ''),
+        'year': m.get('release_date', '???')[:4],
+        'poster': IMG_BASE + m['poster_path'] if m.get('poster_path') else None,
+        'rating': round(m.get('vote_average', 0), 1),
+        'overview': m.get('overview', '')
+    }
 
 def search_movie(query):
     q = urllib.request.quote(query)
     data = tmdb_get('/search/movie', f'query={q}&language=en-US&page=1')
     if not data or not data.get('results'):
         return []
-    results = []
-    for m in data['results'][:8]:
-        results.append({
-            'id': m['id'],
-            'title': m.get('title', ''),
-            'year': m.get('release_date', '???')[:4],
-            'poster': IMG_BASE + m['poster_path'] if m.get('poster_path') else None,
-            'rating': round(m.get('vote_average', 0), 1),
-            'overview': m.get('overview', '')
-        })
-    return results
+    return [format_movie(m) for m in data['results'][:8]]
 
 def get_movie_details(movie_id):
     data = tmdb_get(f'/movie/{movie_id}', 'language=en-US')
@@ -54,26 +55,36 @@ def get_movie_details(movie_id):
     }
 
 def get_recommendations(movie_id):
-    data = tmdb_get(f'/movie/{movie_id}/recommendations', 'language=en-US&page=1')
-    if not data or not data.get('results'):
-        data = tmdb_get(f'/movie/{movie_id}/similar', 'language=en-US&page=1')
-    if not data or not data.get('results'):
-        return []
     recs = []
-    for m in data['results']:
-        if not m.get('poster_path'):
-            continue
-        recs.append({
-            'id': m['id'],
-            'title': m.get('title', ''),
-            'year': m.get('release_date', '???')[:4],
-            'poster': IMG_BASE + m['poster_path'],
-            'rating': round(m.get('vote_average', 0), 1),
-            'overview': m.get('overview', ''),
-        })
-        if len(recs) == 6:
-            break
-    return recs
+
+    # Try recommendations first
+    data = tmdb_get(f'/movie/{movie_id}/recommendations', 'language=en-US&page=1')
+    if data and data.get('results'):
+        for m in data['results']:
+            if m.get('poster_path') and m.get('title'):
+                recs.append(format_movie(m))
+
+    # If less than 6, also try similar
+    if len(recs) < 6:
+        data2 = tmdb_get(f'/movie/{movie_id}/similar', 'language=en-US&page=1')
+        if data2 and data2.get('results'):
+            existing_ids = {r['id'] for r in recs}
+            for m in data2['results']:
+                if m.get('poster_path') and m.get('title') and m['id'] not in existing_ids:
+                    recs.append(format_movie(m))
+
+    # If still empty, fallback to popular movies in same genre
+    if len(recs) == 0:
+        details = tmdb_get(f'/movie/{movie_id}', 'language=en-US')
+        if details and details.get('genres'):
+            genre_id = details['genres'][0]['id']
+            data3 = tmdb_get('/discover/movie', f'with_genres={genre_id}&sort_by=popularity.desc&page=1')
+            if data3 and data3.get('results'):
+                for m in data3['results']:
+                    if m.get('poster_path') and m.get('title') and m['id'] != movie_id:
+                        recs.append(format_movie(m))
+
+    return recs[:6]
 
 def get_popular():
     data = tmdb_get('/movie/popular', 'language=en-US&page=1')
@@ -136,9 +147,9 @@ def recommend(movie_id):
     if 'username' not in session:
         return jsonify({'error': 'Not logged in'}), 401
     movie = get_movie_details(movie_id)
-    recs  = get_recommendations(movie_id)
     if not movie:
         return jsonify({'error': 'Movie not found'}), 404
+    recs = get_recommendations(movie_id)
     return jsonify({'movie': movie, 'recommendations': recs})
 
 if __name__ == '__main__':
