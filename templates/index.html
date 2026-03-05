@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReelMind — Find Your Next Film</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #e63946; --amber: #f4a261; --dark: #0a0a0f;
+    --surface: #0f0f18; --card: #13131e; --border: #1e1e2e;
+    --text: #f0eff4; --muted: #6b6b80; --green: #52b788;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--dark); color:var(--text); font-family:'Outfit',sans-serif; min-height:100vh; }
+
+  /* Diagonal gradient bg */
+  body::before {
+    content:''; position:fixed; inset:0;
+    background: radial-gradient(ellipse 80% 50% at 20% 0%, rgba(230,57,70,0.07) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 40% at 80% 100%, rgba(244,162,97,0.05) 0%, transparent 60%);
+    pointer-events:none; z-index:0;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position:sticky; top:0; z-index:100;
+    background:rgba(10,10,15,0.92); backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 40px; height:64px;
+  }
+
+  .nav-brand {
+    font-family:'Bebas Neue',sans-serif; font-size:1.8rem;
+    letter-spacing:3px;
+    background:linear-gradient(135deg, var(--red), var(--amber));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  }
+
+  .nav-right { display:flex; align-items:center; gap:20px; }
+
+  .nav-user {
+    display:flex; align-items:center; gap:10px;
+    font-size:0.85rem; color:var(--muted);
+  }
+
+  .user-avatar {
+    width:32px; height:32px; border-radius:50%;
+    background:linear-gradient(135deg, var(--red), var(--amber));
+    display:flex; align-items:center; justify-content:center;
+    font-size:0.8rem; font-weight:600; color:#fff;
+  }
+
+  .btn-logout {
+    background:transparent; border:1px solid var(--border);
+    color:var(--muted); border-radius:8px; padding:6px 14px;
+    font-family:'Outfit',sans-serif; font-size:0.8rem; cursor:pointer;
+    transition:all 0.2s;
+  }
+  .btn-logout:hover { border-color:var(--red); color:var(--red); }
+
+  /* ── HERO ── */
+  .hero {
+    position:relative; z-index:1;
+    text-align:center; padding:64px 20px 48px;
+  }
+
+  .hero-eyebrow {
+    display:inline-block; font-size:0.72rem; letter-spacing:3px;
+    text-transform:uppercase; color:var(--amber);
+    background:rgba(244,162,97,0.08); border:1px solid rgba(244,162,97,0.2);
+    border-radius:100px; padding:5px 16px; margin-bottom:22px;
+  }
+
+  .hero-title {
+    font-family:'Bebas Neue',sans-serif;
+    font-size:clamp(3rem,7vw,6rem);
+    letter-spacing:2px; line-height:1;
+    margin-bottom:14px;
+  }
+
+  .hero-title span {
+    background:linear-gradient(135deg, var(--red), var(--amber));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  }
+
+  .hero-sub { font-size:1rem; color:var(--muted); max-width:480px; margin:0 auto 40px; line-height:1.6; }
+
+  /* ── SEARCH ── */
+  .search-wrap {
+    position:relative; max-width:600px; margin:0 auto;
+    display:flex; gap:10px;
+  }
+
+  .search-input {
+    flex:1; background:var(--card); border:1px solid var(--border);
+    border-radius:12px; padding:16px 20px;
+    font-family:'Outfit',sans-serif; font-size:0.95rem;
+    color:var(--text); outline:none;
+    transition:border-color 0.2s, box-shadow 0.2s;
+  }
+  .search-input:focus { border-color:var(--red); box-shadow:0 0 0 3px rgba(230,57,70,0.1); }
+  .search-input::placeholder { color:#3a3a50; }
+
+  .search-btn {
+    background:linear-gradient(135deg, var(--red), #c1121f);
+    color:#fff; border:none; border-radius:12px; padding:16px 28px;
+    font-family:'Outfit',sans-serif; font-size:0.9rem; font-weight:600;
+    cursor:pointer; transition:opacity 0.2s, transform 0.1s; white-space:nowrap;
+  }
+  .search-btn:hover { opacity:0.88; }
+  .search-btn:active { transform:scale(0.97); }
+
+  /* autocomplete */
+  .auto-list {
+    position:absolute; top:calc(100% + 6px); left:0; right:130px;
+    background:var(--card); border:1px solid var(--border); border-radius:10px;
+    overflow:hidden; display:none; z-index:200;
+    box-shadow:0 20px 60px rgba(0,0,0,0.6);
+  }
+  .auto-list.show { display:block; }
+  .auto-item {
+    padding:11px 18px; font-size:0.88rem; cursor:pointer;
+    border-bottom:1px solid var(--border); transition:background 0.15s;
+  }
+  .auto-item:last-child { border-bottom:none; }
+  .auto-item:hover { background:rgba(230,57,70,0.08); color:var(--amber); }
+
+  /* quick picks */
+  .quick-row {
+    display:flex; flex-wrap:wrap; gap:8px;
+    justify-content:center; margin-top:16px;
+    max-width:600px; margin-left:auto; margin-right:auto;
+  }
+  .pill {
+    background:transparent; border:1px solid var(--border); color:var(--muted);
+    border-radius:100px; padding:5px 14px; font-size:0.76rem;
+    cursor:pointer; transition:all 0.2s; font-family:'Outfit',sans-serif;
+  }
+  .pill:hover { border-color:var(--amber); color:var(--amber); background:rgba(244,162,97,0.05); }
+
+  /* ── STATES ── */
+  .loader { display:none; text-align:center; padding:60px 20px; position:relative; z-index:1; }
+  .loader.show { display:block; }
+  .spinner {
+    width:40px; height:40px; border:2px solid var(--border);
+    border-top-color:var(--red); border-radius:50%;
+    animation:spin 0.8s linear infinite; margin:0 auto 14px;
+  }
+  @keyframes spin { to { transform:rotate(360deg); } }
+
+  .error-msg { display:none; text-align:center; padding:24px; color:var(--red); font-size:0.9rem; position:relative; z-index:1; }
+  .error-msg.show { display:block; }
+
+  /* ── RESULTS ── */
+  #results { position:relative; z-index:1; }
+
+  .empty-state { text-align:center; padding:80px 20px; }
+  .empty-icon { font-size:3.5rem; margin-bottom:16px; opacity:0.4; }
+  .empty-title { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; color:var(--muted); letter-spacing:2px; margin-bottom:8px; }
+  .empty-sub { font-size:0.85rem; color:#3a3a50; }
+
+  /* selected movie */
+  .selected-movie { max-width:960px; margin:50px auto 0; padding:0 24px; animation:fadeUp 0.5s ease both; }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+
+  .selected-inner {
+    background:var(--card); border:1px solid var(--border);
+    border-radius:20px; padding:32px; display:flex; gap:28px; align-items:flex-start;
+    border-top:3px solid var(--red);
+  }
+
+  .poster-img {
+    width:110px; height:165px; border-radius:10px; object-fit:cover;
+    flex-shrink:0; border:1px solid var(--border);
+    background:var(--surface);
+  }
+
+  .poster-placeholder {
+    width:110px; height:165px; border-radius:10px; flex-shrink:0;
+    background:linear-gradient(135deg,#1a1a2e,#0d0d1a);
+    border:1px solid var(--border); display:flex; align-items:center;
+    justify-content:center; font-size:2.5rem;
+  }
+
+  .sel-info { flex:1; }
+  .sel-label { font-size:0.68rem; letter-spacing:3px; text-transform:uppercase; color:var(--red); margin-bottom:8px; display:block; }
+  .sel-title { font-family:'Bebas Neue',sans-serif; font-size:2.2rem; letter-spacing:2px; line-height:1.1; margin-bottom:10px; }
+
+  .meta-row { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
+  .badge {
+    font-size:0.72rem; padding:3px 10px; border-radius:6px;
+    background:var(--border); color:var(--muted);
+  }
+  .badge.rating { background:rgba(244,162,97,0.12); color:var(--amber); border:1px solid rgba(244,162,97,0.2); font-weight:600; }
+  .badge.genre { background:rgba(230,57,70,0.08); color:#c06070; border:1px solid rgba(230,57,70,0.15); }
+
+  .sel-desc { font-size:0.88rem; color:var(--muted); line-height:1.65; }
+
+  /* stats report */
+  .report-wrap { max-width:960px; margin:20px auto 0; padding:0 24px; animation:fadeUp 0.5s 0.1s ease both; }
+  .report-inner {
+    background:var(--card); border:1px solid var(--border); border-radius:14px;
+    padding:22px 28px; display:flex; align-items:center; gap:0;
+  }
+  .stat { flex:1; text-align:center; padding:0 20px; border-right:1px solid var(--border); }
+  .stat:last-child { border-right:none; }
+  .stat-val { font-family:'Bebas Neue',sans-serif; font-size:2rem; letter-spacing:1px; display:block; }
+  .stat-val.red { color:var(--red); }
+  .stat-val.amber { color:var(--amber); }
+  .stat-val.green { color:var(--green); }
+  .stat-key { font-size:0.68rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; }
+
+  /* rec grid */
+  .rec-section { max-width:960px; margin:32px auto 80px; padding:0 24px; animation:fadeUp 0.5s 0.2s ease both; }
+  .sec-header { display:flex; align-items:center; gap:14px; margin-bottom:24px; }
+  .sec-title { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; letter-spacing:2px; }
+  .sec-line { flex:1; height:1px; background:var(--border); }
+  .sec-count { font-size:0.72rem; color:var(--muted); background:var(--card); border:1px solid var(--border); border-radius:100px; padding:3px 12px; }
+
+  .rec-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:16px; }
+
+  .rec-card {
+    background:var(--card); border:1px solid var(--border); border-radius:14px;
+    overflow:hidden; cursor:pointer;
+    transition:border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    animation:fadeUp 0.4s ease both;
+  }
+  .rec-card:hover { border-color:rgba(230,57,70,0.4); transform:translateY(-4px); box-shadow:0 16px 40px rgba(0,0,0,0.5); }
+
+  .card-poster { width:100%; aspect-ratio:2/3; object-fit:cover; background:var(--surface); display:block; }
+  .card-poster-placeholder { width:100%; aspect-ratio:2/3; background:linear-gradient(135deg,#1a1a2e,#0d0d1a); display:flex; align-items:center; justify-content:center; font-size:3rem; color:#2a2a40; }
+
+  .card-body { padding:14px 16px; }
+  .card-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px; }
+  .card-title { font-family:'Bebas Neue',sans-serif; font-size:1.05rem; letter-spacing:1px; line-height:1.2; flex:1; }
+  .match-pct { font-size:0.78rem; font-weight:600; color:var(--green); white-space:nowrap; margin-left:8px; }
+  .card-genres { font-size:0.72rem; color:var(--muted); margin-bottom:8px; }
+  .card-foot { display:flex; justify-content:space-between; padding-top:10px; border-top:1px solid var(--border); }
+  .card-year { font-size:0.72rem; color:var(--muted); }
+  .card-rating { font-size:0.72rem; color:var(--amber); }
+
+  footer { text-align:center; padding:28px; border-top:1px solid var(--border); font-size:0.75rem; color:#3a3a50; position:relative; z-index:1; }
+  footer strong { color:var(--amber); }
+
+  @media (max-width:600px) {
+    nav { padding:0 16px; }
+    .selected-inner { flex-direction:column; }
+    .report-inner { flex-wrap:wrap; }
+    .stat { min-width:50%; margin-bottom:10px; }
+    .search-wrap { flex-direction:column; }
+    .search-btn { width:100%; }
+    .auto-list { right:0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">ReelMind</div>
+  <div class="nav-right">
+    <div class="nav-user">
+      <div class="user-avatar" id="avatarInitial">?</div>
+      <span id="navUsername">Loading...</span>
+    </div>
+    <button class="btn-logout" onclick="window.location='/logout'">Sign Out</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">✦ AI-Powered · TF-IDF · Cosine Similarity</div>
+  <h1 class="hero-title">Find Your <span>Next Film</span></h1>
+  <p class="hero-sub">Type any movie you love and our algorithm will instantly find the most similar films for you.</p>
+
+  <div style="position:relative; max-width:600px; margin:0 auto;">
+    <div class="search-wrap">
+      <input type="text" class="search-input" id="searchInput" placeholder="e.g. Inception, Joker, Dune…" autocomplete="off" />
+      <div class="auto-list" id="autoList"></div>
+      <button class="search-btn" onclick="doSearch()">Find →</button>
+    </div>
+  </div>
+
+  <div class="quick-row" id="quickRow"></div>
+</div>
+
+<!-- LOADER / ERROR -->
+<div class="loader" id="loader">
+  <div class="spinner"></div>
+  <p style="color:var(--muted);font-size:0.85rem;">Analysing your taste…</p>
+</div>
+<div class="error-msg" id="errorMsg"></div>
+
+<!-- RESULTS -->
+<div id="results">
+  <div class="empty-state">
+    <div class="empty-icon">🎬</div>
+    <div class="empty-title">Recommendations Appear Here</div>
+    <div class="empty-sub">Search for a movie above to get started</div>
+  </div>
+</div>
+
+<footer>
+  <strong>ReelMind</strong> &nbsp;·&nbsp; S.Y.B.Sc. CS Mini Project &nbsp;·&nbsp; CS-281-FP &nbsp;·&nbsp;
+  Savitribai Phule Pune University &nbsp;·&nbsp; Python · Flask · TF-IDF · Cosine Similarity
+</footer>
+
+<script>
+  const allTitles = {{ titles | tojson }};
+  const username  = {{ username | tojson }};
+  const TMDB_KEY  = 'YOUR_TMDB_API_KEY'; // ← Replace with your key
+
+  // Set nav username
+  document.getElementById('navUsername').textContent = username;
+  document.getElementById('avatarInitial').textContent = username.charAt(0).toUpperCase();
+
+  // Quick picks
+  const picks = ['The Dark Knight','Inception','Joker','Parasite','Dune','Interstellar','The Matrix','Gladiator'];
+  const qr = document.getElementById('quickRow');
+  picks.forEach(t => {
+    const b = document.createElement('button');
+    b.className = 'pill'; b.textContent = t;
+    b.onclick = () => { document.getElementById('searchInput').value = t; doSearch(); };
+    qr.appendChild(b);
+  });
+
+  // Autocomplete
+  const input = document.getElementById('searchInput');
+  const autoList = document.getElementById('autoList');
+
+  input.addEventListener('input', () => {
+    const val = input.value.trim().toLowerCase();
+    autoList.innerHTML = '';
+    if (!val) { autoList.classList.remove('show'); return; }
+    const hits = allTitles.filter(t => t.toLowerCase().includes(val)).slice(0,6);
+    if (!hits.length) { autoList.classList.remove('show'); return; }
+    hits.forEach(t => {
+      const d = document.createElement('div');
+      d.className = 'auto-item'; d.textContent = t;
+      d.onclick = () => { input.value = t; autoList.classList.remove('show'); doSearch(); };
+      autoList.appendChild(d);
+    });
+    autoList.classList.add('show');
+  });
+
+  document.addEventListener('click', e => { if(!e.target.closest('.search-wrap')) autoList.classList.remove('show'); });
+  input.addEventListener('keydown', e => { if(e.key==='Enter') doSearch(); });
+
+  // TMDB poster fetcher
+  async function fetchPoster(tmdb_id) {
+    if (TMDB_KEY === 'YOUR_TMDB_API_KEY') return null;
+    try {
+      const r = await fetch(`https://api.themoviedb.org/3/movie/${tmdb_id}?api_key=${TMDB_KEY}`);
+      const d = await r.json();
+      return d.poster_path ? `https://image.tmdb.org/t/p/w300${d.poster_path}` : null;
+    } catch { return null; }
+  }
+
+  // Search
+  function doSearch() {
+    const movie = input.value.trim();
+    if (!movie) return;
+    autoList.classList.remove('show');
+    document.getElementById('loader').classList.add('show');
+    document.getElementById('errorMsg').classList.remove('show');
+    document.getElementById('results').innerHTML = '';
+
+    fetch('/recommend', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ movie })
+    })
+    .then(r => r.json().then(d => ({ ok:r.ok, data:d })))
+    .then(({ ok, data }) => {
+      document.getElementById('loader').classList.remove('show');
+      if (!ok) {
+        const e = document.getElementById('errorMsg');
+        e.textContent = '🎭 ' + (data.error || 'Movie not found.');
+        e.classList.add('show'); return;
+      }
+      renderResults(data);
+    })
+    .catch(() => {
+      document.getElementById('loader').classList.remove('show');
+      const e = document.getElementById('errorMsg');
+      e.textContent = '⚠️ Something went wrong. Try again.';
+      e.classList.add('show');
+    });
+  }
+
+  async function renderResults({ movie, recommendations }) {
+    const avgSim = recommendations.length
+      ? (recommendations.reduce((a,r)=>a+r.similarity,0)/recommendations.length).toFixed(1) : 0;
+
+    // Build selected movie HTML
+    const selPosterUrl = await fetchPoster(movie.tmdb_id);
+    const selPosterHtml = selPosterUrl
+      ? `<img class="poster-img" src="${selPosterUrl}" alt="${movie.title}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+      : '';
+    const selFallback = `<div class="poster-placeholder" ${selPosterUrl?'style="display:none"':''}>🎬</div>`;
+
+    const genreBadges = movie.genres.split(' ').map(g=>`<span class="badge genre">${g}</span>`).join('');
+
+    let html = `
+      <div class="selected-movie">
+        <div class="selected-inner">
+          ${selPosterHtml}${selFallback}
+          <div class="sel-info">
+            <span class="sel-label">Now Searching</span>
+            <div class="sel-title">${movie.title}</div>
+            <div class="meta-row">
+              <span class="badge rating">⭐ ${movie.rating}/10</span>
+              <span class="badge">${movie.year}</span>
+              ${genreBadges}
+            </div>
+            <div class="sel-desc">${movie.description}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="report-wrap">
+        <div class="report-inner">
+          <div class="stat"><span class="stat-val red">${recommendations.length}</span><span class="stat-key">Movies Found</span></div>
+          <div class="stat"><span class="stat-val amber">${avgSim}%</span><span class="stat-key">Avg Similarity</span></div>
+          <div class="stat"><span class="stat-val green">${recommendations[0]?.similarity||0}%</span><span class="stat-key">Top Match</span></div>
+          <div class="stat"><span class="stat-val" style="color:#8888a0;font-size:1.2rem;">TF-IDF</span><span class="stat-key">Algorithm</span></div>
+        </div>
+      </div>
+
+      <div class="rec-section">
+        <div class="sec-header">
+          <div class="sec-title">Recommended For You</div>
+          <div class="sec-line"></div>
+          <div class="sec-count">${recommendations.length} results</div>
+        </div>
+        <div class="rec-grid" id="recGrid"></div>
+      </div>
+    `;
+
+    document.getElementById('results').innerHTML = html;
+    document.getElementById('results').scrollIntoView({ behavior:'smooth', block:'start' });
+
+    // Load cards with posters async
+    const grid = document.getElementById('recGrid');
+    recommendations.forEach(async (r, i) => {
+      const card = document.createElement('div');
+      card.className = 'rec-card';
+      card.style.animationDelay = `${i * 0.06}s`;
+      card.onclick = () => { input.value = r.title; doSearch(); window.scrollTo({top:0,behavior:'smooth'}); };
+
+      // placeholder first
+      card.innerHTML = `
+        <div class="card-poster-placeholder">🎬</div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-title">${r.title}</div>
+            <div class="match-pct">${r.similarity}%</div>
+          </div>
+          <div class="card-genres">${r.genres.split(' ').join(' · ')}</div>
+          <div class="card-foot">
+            <span class="card-year">${r.year}</span>
+            <span class="card-rating">⭐ ${r.rating}</span>
+          </div>
+        </div>
+      `;
+      grid.appendChild(card);
+
+      // load poster async
+      const posterUrl = await fetchPoster(r.tmdb_id);
+      if (posterUrl) {
+        const img = document.createElement('img');
+        img.className = 'card-poster';
+        img.src = posterUrl;
+        img.alt = r.title;
+        img.onerror = () => img.remove();
+        card.querySelector('.card-poster-placeholder').replaceWith(img);
+      }
+    });
+  }
+</script>
+</body>
+</html>
