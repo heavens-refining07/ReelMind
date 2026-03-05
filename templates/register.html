@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReelMind — Create Account</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #e63946; --amber: #f4a261;
+    --dark: #0a0a0f; --card: #12121a;
+    --border: #1f1f2e; --text: #f0eff4; --muted: #6b6b80;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--dark); font-family:'Outfit',sans-serif; min-height:100vh; display:flex; overflow:hidden; }
+
+  .left-panel {
+    width: 55%; position:relative; overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .film-bg { position:absolute; inset:0; background:linear-gradient(135deg,#0d1a0a 0%,#0d0d1a 50%,#1a0d0a 100%); }
+
+  .movie-grid {
+    position:absolute; inset:60px;
+    display:grid; grid-template-columns:repeat(3,1fr);
+    gap:8px; opacity:0.1; transform:rotate(3deg) scale(1.1);
+  }
+  .movie-tile { background:linear-gradient(135deg,var(--amber),var(--red)); border-radius:6px; aspect-ratio:2/3; }
+  .movie-tile:nth-child(2n) { background:linear-gradient(135deg,#1a1a3a,#2a1a4a); }
+  .movie-tile:nth-child(3n) { background:linear-gradient(135deg,#2a1a0a,#1a0a0a); }
+
+  .hero-text { position:relative; z-index:2; text-align:center; padding:40px; }
+  .brand {
+    font-family:'Bebas Neue',sans-serif; font-size:5rem; letter-spacing:4px;
+    background:linear-gradient(135deg,var(--amber),var(--red));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    line-height:1; margin-bottom:12px;
+  }
+  .brand-sub { font-size:0.9rem; color:var(--muted); letter-spacing:3px; text-transform:uppercase; margin-bottom:32px; }
+  .welcome-msg { font-size:1.1rem; color:#5a5a70; line-height:1.6; max-width:280px; margin:0 auto; }
+  .welcome-msg strong { color:var(--amber); }
+
+  .right-panel { width:45%; display:flex; align-items:center; justify-content:center; padding:40px; border-left:1px solid var(--border); }
+  .register-box { width:100%; max-width:380px; }
+
+  .register-title { font-family:'Bebas Neue',sans-serif; font-size:2.4rem; letter-spacing:2px; color:var(--text); margin-bottom:6px; }
+  .register-sub { font-size:0.85rem; color:var(--muted); margin-bottom:32px; }
+
+  .form-group { margin-bottom:16px; }
+  label { display:block; font-size:0.75rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+
+  input[type="text"], input[type="password"] {
+    width:100%; background:var(--card); border:1px solid var(--border);
+    border-radius:10px; padding:14px 16px; font-family:'Outfit',sans-serif;
+    font-size:0.95rem; color:var(--text); outline:none;
+    transition:border-color 0.2s, box-shadow 0.2s;
+  }
+  input:focus { border-color:var(--amber); box-shadow:0 0 0 3px rgba(244,162,97,0.1); }
+  input::placeholder { color:#3a3a50; }
+
+  .password-hint { font-size:0.72rem; color:#3a3a50; margin-top:5px; }
+
+  .btn-register {
+    width:100%; background:linear-gradient(135deg,var(--amber),#e76f51);
+    color:#0a0a0f; border:none; border-radius:10px; padding:15px;
+    font-family:'Outfit',sans-serif; font-size:0.95rem; font-weight:700;
+    letter-spacing:1px; cursor:pointer; margin-top:8px;
+    transition:opacity 0.2s, transform 0.1s;
+  }
+  .btn-register:hover { opacity:0.9; }
+  .btn-register:active { transform:scale(0.98); }
+
+  .divider { display:flex; align-items:center; gap:12px; margin:22px 0; }
+  .divider-line { flex:1; height:1px; background:var(--border); }
+  .divider-text { font-size:0.75rem; color:var(--muted); }
+
+  .btn-login {
+    width:100%; background:transparent; border:1px solid var(--border);
+    color:var(--text); border-radius:10px; padding:14px;
+    font-family:'Outfit',sans-serif; font-size:0.9rem; cursor:pointer;
+    transition:border-color 0.2s, background 0.2s;
+  }
+  .btn-login:hover { border-color:var(--red); background:rgba(230,57,70,0.05); color:var(--red); }
+
+  .error-box {
+    display:none; background:rgba(230,57,70,0.1);
+    border:1px solid rgba(230,57,70,0.3); border-radius:8px;
+    padding:10px 14px; font-size:0.83rem; color:var(--red); margin-bottom:16px;
+  }
+  .error-box.show { display:block; }
+
+  .success-box {
+    display:none; background:rgba(76,175,130,0.1);
+    border:1px solid rgba(76,175,130,0.3); border-radius:8px;
+    padding:10px 14px; font-size:0.83rem; color:#4caf82; margin-bottom:16px;
+  }
+  .success-box.show { display:block; }
+
+  .college-tag { margin-top:36px; font-size:0.72rem; color:#3a3a50; text-align:center; letter-spacing:0.5px; }
+  @media (max-width:768px) { .left-panel { display:none; } .right-panel { width:100%; } }
+</style>
+</head>
+<body>
+
+<div class="left-panel">
+  <div class="film-bg"></div>
+  <div class="movie-grid">
+    <div class="movie-tile"></div><div class="movie-tile"></div><div class="movie-tile"></div>
+    <div class="movie-tile"></div><div class="movie-tile"></div><div class="movie-tile"></div>
+    <div class="movie-tile"></div><div class="movie-tile"></div><div class="movie-tile"></div>
+  </div>
+  <div class="hero-text">
+    <div class="brand">ReelMind</div>
+    <div class="brand-sub">Join Today — It's Free</div>
+    <div class="welcome-msg">
+      Create your account and start getting <strong>AI-powered movie recommendations</strong> tailored just for you.
+    </div>
+  </div>
+</div>
+
+<div class="right-panel">
+  <div class="register-box">
+    <div class="register-title">Create Account</div>
+    <div class="register-sub">Fill in the details below to get started</div>
+
+    <div class="error-box" id="errorBox"></div>
+    <div class="success-box" id="successBox">Account created! Redirecting...</div>
+
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" id="username" placeholder="Choose a username" />
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="password" placeholder="Create a password" />
+      <div class="password-hint">Minimum 6 characters</div>
+    </div>
+    <div class="form-group">
+      <label>Confirm Password</label>
+      <input type="password" id="confirm" placeholder="Repeat your password" onkeydown="if(event.key==='Enter') doRegister()" />
+    </div>
+
+    <button class="btn-register" onclick="doRegister()">Create Account →</button>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <div class="divider-text">Already have an account?</div>
+      <div class="divider-line"></div>
+    </div>
+
+    <button class="btn-login" onclick="window.location='/login'">Sign In Instead</button>
+
+    <div class="college-tag">
+      CS-281-FP Mini Project · S.Y.B.Sc. Computer Science<br>
+      Savitribai Phule Pune University
+    </div>
+  </div>
+</div>
+
+<script>
+  function doRegister() {
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    const confirm  = document.getElementById('confirm').value;
+    const errorBox   = document.getElementById('errorBox');
+    const successBox = document.getElementById('successBox');
+    errorBox.classList.remove('show');
+
+    if (!username || !password || !confirm) {
+      errorBox.textContent = 'Please fill in all fields.';
+      errorBox.classList.add('show'); return;
+    }
+    if (password !== confirm) {
+      errorBox.textContent = 'Passwords do not match.';
+      errorBox.classList.add('show'); return;
+    }
+
+    fetch('/register', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ username, password })
+    })
+    .then(r => r.json().then(d => ({ ok: r.ok, data: d })))
+    .then(({ ok, data }) => {
+      if (ok) {
+        successBox.classList.add('show');
+        setTimeout(() => window.location = '/', 1200);
+      } else {
+        errorBox.textContent = data.error || 'Registration failed.';
+        errorBox.classList.add('show');
+      }
+    });
+  }
+</script>
+</body>
+</html>
