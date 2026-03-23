@@ -24,7 +24,6 @@
 | **Flask** | Lightweight web framework — handles URL routing, renders pages, and processes requests |
 | **Jinja2** | Templating engine (comes with Flask) — lets us inject Python data into HTML dynamically |
 | **SQLite / JSON** | Stores user account info locally without a heavy database setup |
-| **Werkzeug** | Helper library used to hash (encrypt) passwords securely before storing them |
 
 ### Frontend (Client Side)
 
