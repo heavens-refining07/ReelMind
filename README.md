@@ -38,9 +38,9 @@
 
 | Component | Details |
 |---|---|
-| **Movie Dataset** | 30+ curated movies stored as a Python list/JSON. Each has: Title, Genre(s), Description, Tags, Poster URL |
+| **Movie Dataset** | TMBD API Key for automation |
 | **Movie Posters** | Real poster images fetched via TMDB API URLs |
-| **Feature Vectors** | Each movie is converted into a TF-IDF vector for mathematical comparison |
+
 
 ### Deployment
 
