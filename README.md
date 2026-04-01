@@ -46,7 +46,6 @@
 | Platform | Details |
 |---|---|
 | **Render.com** | Free cloud platform to host the Flask app publicly on the internet |
-| **Gunicorn** | Production-grade WSGI server to run Flask on Render |
 | **GitHub** | Source code is pushed here; Render auto-deploys from this repo |
 
 ---
